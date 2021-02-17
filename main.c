@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include  <stdbool.h>
+#include <stdlib.h>
 /** csv [-frh] {[-max field] [-min field] [-mean field]} [-records field value] file **/
 
 //first field
@@ -8,7 +9,7 @@ void commandF(char*);
 void commandR(char*);
 void commandH(char*);
 
-void maxField(char*, char*, char*);// not sure for parameters
+void maxField(char*, char*, char*);
 void minField(char*, char*, char*);
 void meanField(char*, char*, char*);
 void recordsFieldValue(char*, char*, char*);
@@ -64,7 +65,41 @@ int main(int argc, char *argv[]){
 }
 
 // implement functions
-void commandF(char* fileName){}
+void commandF(char* fileName){
+    FILE *readFile;
+    bool charRead = false;
+    int fieldLength = 0;
+    char* field = (char*)malloc(sizeof(char*)*30);
+    int amtOfFields = 0;
+    //printf("reading file...\n");
+    readFile = fopen(fileName, "r");
+
+    if(readFile == NULL){
+        printf("Error NULL file read");
+    }
+    else{
+        fscanf(readFile,"%s",field);     // reads in a whole line from the file
+        if(field[0] != '\0'){            // makes sure the file isn't empty
+            charRead = true;             // flag that lets us know at least one field was read
+            fieldLength = strlen(field); //length of the line read in
+            //printf("field: %s\n",field);
+            for(int i = 0; i<=fieldLength; i++){
+                if(field[i] == ',' || field[i] == '\0'){
+                    amtOfFields++;                          /* check for a comma or null character and increment the amount of
+                                                            fields read*/
+                }
+            }
+        }
+
+    }
+    fclose(readFile);
+    if(charRead){
+        printf("Number of fields: %d\n",amtOfFields);
+    }
+    else{
+        printf("Number of fields: %d\n",0);
+    }
+}
 void commandR(char* fileName){}
 void commandH(char* fileName){}
 void maxField(char* frhCmd, char* field, char* fileName){}
