@@ -100,7 +100,9 @@ void commandF(char* fileName){
         printf("Number of fields: %d\n",0);
     }
 }
-void commandR(char* fileName){}
+void commandR(char* fileName){
+    int i = 0;
+}
 void commandH(char* fileName){}
 void maxField(char* frhCmd, char* field, char* fileName){}
 void minField(char* frhCmd, char* field, char* fileName){}
