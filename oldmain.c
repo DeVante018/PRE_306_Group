@@ -7,10 +7,12 @@
 //first field
 void commandF(char*);
 void commandR(char*);
-void maxField(char*, char*);
-void minField(char*, char*);
-void meanField(char*, char*);
-void recordsFieldValue(char*, char*);
+void commandH(char*);
+
+void maxField(char*, char*, char*);
+void minField(char*, char*, char*);
+void meanField(char*, char*, char*);
+void recordsFieldValue(char*, char*, char*);
 int checkInputError(int, char*);
 void initOptions(char**);
 
@@ -31,31 +33,33 @@ int main(int argc, char *argv[]){
     char* fieldName;
     char* file = argv[argc-1];
 
-    if(arguments >= 4 ){
-        if(strcmp(frh,"-f") == 0 && arguments == 4){
+    if(arguments == 4 ){
+        if(strcmp(frh,"-f") == 0){
             commandF(file);
         }
-        else if(strcmp(frh,"-r") == 0 && arguments == 4){
+        else if(strcmp(frh,"-r") == 0){
             commandR(file);
         }
-        else if (strcmp(frh,"-h") == 0){
-            fieldName = argv[4];
-            if(max == argv[3]){
-                maxField(fieldName, fieldName);
-            }
-            else if(min == argv[3]){
-                minField(fieldName, fieldName);
-            }
-            else if(mean == argv[3]){
-                meanField(fieldName, fieldName);
-            }
-        }
-        else{
-            printError();
+        else if (strcmp(frh,"h") == 0){
+            commandH(file);
         }
     }
     else{
-     printError();
+        fieldName = argv[4];
+        if(strcmp(frh,"-f") == 0 || strcmp(frh,"-r") == 0 || strcmp(frh,"-h") == 0){
+            // chek if its max, min, mean or record
+            if(max == argv[3]){
+                maxField(frh, fieldName, fieldName);
+            }
+            else if(min == argv[3]){
+                minField(frh, fieldName, fieldName);
+            }
+            else if(mean == argv[3]){
+                meanField(frh, fieldName, fieldName);
+            }
+            else recordsFieldValue(frh, fieldName, fieldName);
+        }
+        else printError();
     }
     return 0;
 }
@@ -97,12 +101,11 @@ void commandF(char* fileName){
     }
 }
 void commandR(char* fileName){}
-void maxField(char* field, char* fileName){
-
-}
-void minField(char* field, char* fileName){}
-void meanField(char* field, char* fileName){}
-void recordsFieldValue(char* field, char* fileName){}
+void commandH(char* fileName){}
+void maxField(char* frhCmd, char* field, char* fileName){}
+void minField(char* frhCmd, char* field, char* fileName){}
+void meanField(char* frhCmd, char* field, char* fileName){}
+void recordsFieldValue(char* frhCmd, char* field, char* fileName){}
 
 void printError(){
     printf("invalid command line arguments\n");
@@ -111,7 +114,7 @@ void printError(){
 
 int checkInputError(int numberOfArguments, char* argu){
     int invalidArgs = -1;
-    if((numberOfArguments == 4 || numberOfArguments == 6) && strcmp(argu,"csv") == 0){
+    if(numberOfArguments == 4 || numberOfArguments == 6 && strcmp(argu,"csv") == 0){
         return numberOfArguments;
     }
     else{
