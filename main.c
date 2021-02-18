@@ -40,7 +40,6 @@ int main(int argc, char *argv[]){
         else if (strcmp(frh,"-h") == 0){
             fieldName = argv[4];
             if(strcmp(max,argv[3]) == 0){
-                printf("hello\n");
                 maxField(fieldName, file);
             }
             else if(strcmp(max,argv[3]) == 0){
@@ -172,15 +171,66 @@ while(fgets(line, sizeof(line), readFile)){
     index2 = 0;
 }
 index = 0; 
+int relativeIndex = 0;
 char storeString [2048] = {0};
-strcpy(storeString, lines[0]);
-const char *ptr = strchr(storeString, ',');
+char cmpString [2048] = {0};
+for (int i = 0; i < strlen(field); i++){
+cmpString[i] = field[i];
+}
+//strcpy(storeString, lines[0]);
+//char *ptr = strchr(storeString, ',\0');
+//char checkFor [] = ",\0"
+//strcspn()
+int storeIndex = 0;
+while(index < 2048 ){
 
-//while(index < 2048 || lines[0][index] == '\0'){
-//    
-//}
+ if(lines[0][index] == '\0'){
+     int replaceBytes = 2048 - storeIndex - 2;
+     int addition = storeIndex - 2;
+     memset(storeString + addition, 0, replaceBytes);
+     memset(cmpString + addition, 0, replaceBytes);
+     for(int i = 0; i < 2048; i++){
+         if(cmpString[i] != storeString[i]){
+            printf("%d", i);
+         }
+     }
+     printf("\n");
+     printf("\n");
+     if(strcmp(storeString, cmpString) == 0){
+         printf("hello Kyle");
+         break;
+     }else{
+         relativeIndex = -1;
+         break;
+     }
+    
+ }else if(lines[0][index] == ','){
+     if(strcmp(storeString, cmpString) == 0){
+         break;
+     }
+    memset(storeString, 0, 2048);
+    storeIndex = 0;
+    relativeIndex += 1;
+ }else{
+     storeString[storeIndex] = lines[0][index];
+     storeIndex = storeIndex + 1;
+ }
+ index = index + 1; 
+}
+index = 1;
+if(relativeIndex != -1){
+while(index < numberOflines){
+    
+    index += 1; 
+}
+}
+printf("%d", relativeIndex);
+printf("%s",lines[1]);
 
-printf("%s",lines[0]);
+
+index = 0; 
+if
+while()
 fclose(readFile);
 }
 void minField(char* field, char* fileName){}
