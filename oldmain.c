@@ -100,8 +100,56 @@ void commandF(char* fileName){
         printf("Number of fields: %d\n",0);
     }
 }
-void commandR(char* fileName){}
-void commandH(char* fileName){}
+void commandR(char* fileName){
+    FILE *readFile;
+    bool charRead = false;
+    char* field = (char*)malloc(sizeof(char*)*30);
+    int amtOfRecords = 0;
+    readFile = fopen(fileName, "r");
+
+    if(readFile == NULL){
+        printf("Error NULL file read");
+    }
+    else{
+        fscanf(readFile,"%s",field);
+        amtOfRecords++;
+        if(field[0] != '\0'){
+            charRead = true;
+            while(fscanf(readFile, "%c", field) == 1){
+                if(*field == '\n'){
+                    amtOfRecords++;
+                }
+            }
+        }
+    }
+
+    fclose(readFile);
+    if(charRead){
+        printf("Number of lines: %d\n",amtOfRecords);
+    }
+    else{
+        printf("Number of records: %d\n",0);
+    }
+}
+
+void commandH(char* fileName){
+    FILE *readFile;
+    bool charRead = false;
+    char* field = (char*)malloc(sizeof(char*)*30);
+    readFile = fopen(fileName, "r");
+
+    if(readFile == NULL){
+        printf("Error NULL file read");
+    }
+    else{
+        fscanf(readFile,"%s",field);     // reads in a whole line from the file
+        if(field[0] != '\0'){            // makes sure the file isn't empty
+            charRead = true;             // flag that lets us know at least one field was read
+
+        }
+    }
+}
+
 void maxField(char* frhCmd, char* field, char* fileName){}
 void minField(char* frhCmd, char* field, char* fileName){}
 void meanField(char* frhCmd, char* field, char* fileName){}

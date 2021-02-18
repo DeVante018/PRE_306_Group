@@ -7,6 +7,7 @@
 //first field
 void commandF(char*);
 void commandR(char*);
+int commandRHelper(char* fileName);
 void maxField(char*, char*);
 void minField(char*, char*);
 void meanField(char*, char*);
@@ -23,14 +24,12 @@ int main(int argc, char *argv[]){
         printError();
         return 0;
     }
-
     char* frh = argv[2];
     char* max = "-max";
     char* min = "-min";
     char* mean = "-mean";
     char* fieldName;
     char* file = argv[argc-1];
-
     if(arguments >= 4 ){
         if(strcmp(frh,"-f") == 0 && arguments == 4){
             commandF(file);
@@ -40,14 +39,17 @@ int main(int argc, char *argv[]){
         }
         else if (strcmp(frh,"-h") == 0){
             fieldName = argv[4];
-            if(max == argv[3]){
-                maxField(fieldName, fieldName);
+            if(strcmp(max,argv[3]) == 0){
+                printf("hello\n");
+                maxField(fieldName, file);
             }
-            else if(min == argv[3]){
-                minField(fieldName, fieldName);
+            else if(strcmp(max,argv[3]) == 0){
+                minField(fieldName, file);
             }
-            else if(mean == argv[3]){
-                meanField(fieldName, fieldName);
+            else if(strcmp(max,argv[3]) == 0){
+                meanField(fieldName, file);
+            }else{
+                printf("why the fuck am i here");
             }
         }
         else{
@@ -96,9 +98,90 @@ void commandF(char* fileName){
         printf("Number of fields: %d\n",0);
     }
 }
-void commandR(char* fileName){}
-void maxField(char* field, char* fileName){
+void commandR(char* fileName){
+    FILE *readFile;
+    bool charRead = false;
+    char* field = (char*)malloc(sizeof(char*)*30);
+    int amtOfRecords = 0;
+    readFile = fopen(fileName, "r");
 
+    if(readFile == NULL){
+        printf("Error NULL file read");
+    }
+    else{
+        fscanf(readFile,"%s",field);
+        if(field[0] != '\0'){
+            charRead = true;
+            while(fscanf(readFile, "%c", field) == 1){
+                if(*field == '\n'){
+                    amtOfRecords++;
+                }
+            }
+        }
+    }
+
+    fclose(readFile);
+    if(charRead){
+        printf("Number of lines: %d\n",amtOfRecords);
+    }
+    else{
+        printf("Number of records: %d\n",0);
+    }
+}
+int commandRHelper(char* fileName){
+    FILE *readFile;
+    bool charRead = false;
+    char* field = (char*)malloc(sizeof(char*)*30);
+    int amtOfRecords = 0;
+    readFile = fopen(fileName, "r");
+
+    if(readFile == NULL){
+        printf("Error NULL file read");
+    }
+    else{
+        fscanf(readFile,"%s",field);
+        if(field[0] != '\0'){
+            charRead = true;
+            while(fscanf(readFile, "%c", field) == 1){
+                if(*field == '\n'){
+                    amtOfRecords++;
+                }
+            }
+        }
+    }
+
+    fclose(readFile);
+    return amtOfRecords;
+}
+
+void maxField(char* field, char* fileName){
+FILE *readFile;
+readFile = fopen(fileName, "r");
+int numberOflines = commandRHelper(fileName);
+char line[1024] = {0};
+char (*lines)[numberOflines] = malloc(sizeof(char [numberOflines][2048]));
+//char lines[1024][1024] = {0};
+int index = 0;
+int index2 = 0; 
+while(fgets(line, sizeof(line), readFile)){
+    while(index2 < 2048){
+        lines[index][index2] = line[index2];
+        index2 = index2 + 1; 
+    }
+    index = index + 1; 
+    index2 = 0;
+}
+index = 0; 
+char storeString [2048] = {0};
+strcpy(storeString, lines[0]);
+const char *ptr = strchr(storeString, ',');
+
+//while(index < 2048 || lines[0][index] == '\0'){
+//    
+//}
+
+printf("%s",lines[0]);
+fclose(readFile);
 }
 void minField(char* field, char* fileName){}
 void meanField(char* field, char* fileName){}
