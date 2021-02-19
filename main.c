@@ -235,7 +235,52 @@ fclose(readFile);
 }
 void minField(char* field, char* fileName){}
 void meanField(char* field, char* fileName){}
-void recordsFieldValue(char* field, char* fileName){}
+void recordsFieldValue(char* fileName, char* value){
+    FILE *readFile;
+    bool charRead = false;
+    bool valueFound = false;
+    char* character = (char*)malloc(sizeof(char*) * 30);
+    readFile = fopen(fileName, "r");
+    char* fullLine = (char*)malloc(sizeof(char*)*50);
+    char* strBuilder = (char*)malloc(sizeof(char*)*25);
+    int strIdx = 0;
+    if(readFile == NULL){
+        printf("Error NULL file read");
+    }
+    else{
+        fscanf(readFile, "%s", character); // actually the full line
+        if(character[0] != '\0'){
+            charRead = true;
+            while(fscanf(readFile, "%c", character) == 1){
+                strcat(fullLine, character);
+                if(*character == value[strIdx]){
+                    strcat(strBuilder,character);
+                    if(strcmp(strBuilder,value)==0){
+                        valueFound = true;
+                    }
+                }
+                if(*character == '\n'){
+                    if(valueFound){
+                        printf("%s",fullLine);
+                        fullLine = "";
+                    }
+                    fullLine = "";
+                    valueFound = false;
+                    strBuilder = "";
+                }
+            }
+        }
+    }
+
+    fclose(readFile);
+    if(charRead){
+        printf("Number of records: %d\n",0);
+    }
+    else{
+        printf("Number of records: %d\n",0);
+    }
+
+}
 
 void printError(){
     printf("invalid command line arguments\n");
