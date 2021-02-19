@@ -197,7 +197,6 @@ while(index < 2048 ){
      printf("\n");
      printf("\n");
      if(strcmp(storeString, cmpString) == 0){
-         printf("hello Kyle");
          break;
      }else{
          relativeIndex = -1;
@@ -226,16 +225,102 @@ while(index < numberOflines){
 }
 printf("%d", relativeIndex);
 printf("%s",lines[1]);
+// at this point we have an index of the field that was searched and a 2d array of all the data that was read from the file
 
+memset(storeString, 'Q', 2048); // initialize all data in storeString to non numeric value
+int* numericData = (int*) malloc((numberOflines - 1) * sizeof(int)); // dynamically allocate int array to hold returns of atoi(storestring)
+int relativeIndexIterator = 0;
+int index3 = 0;
+bool checker = false;
+int numResult = 0;
+if(relativeIndex != -1){
+index = 1; 
+index2 = 0; 
+// loop from second line in file to last line in file 
+while( index < numberOflines){
+    // at each line we go from i to the relative index 
+    for(int i = 0; i <= relativeIndex; i++){
+        // i == relative index then we will start putting characters in store string
+        if(i == relativeIndex){
+            while(lines[index][index2] != ',' && lines[index][index2] != '\n' && index2 != 2048){
+                storeString[index3] = lines[index][index2];
+                index2 += 1; 
+                index3 += 1;
+            }
+        }
+        else{
+            while(lines[index][index2] != ',' && lines[index][index2] != '\n' && index2 == 2048){
+                index2 += 1; 
+            }
+            index2 += 1; 
+        }
+    }
+    // checks if field has numeric data 
+    if(strchr(storeString, '0') != NULL || strchr(storeString, '1') != NULL || strchr(storeString, '2') != NULL || strchr(storeString, '3') != NULL || strchr(storeString, '4') != NULL || strchr(storeString, '5') != NULL || strchr(storeString, '6') != NULL || strchr(storeString, '7') != NULL || strchr(storeString, '8') != NULL || strchr(storeString, '9') != NULL){
+        checker = true;
+    }
 
-index = 0; 
-if
-while()
+    if(checker == true ){
+        numResult =  atoi(storeString);
+    }else{
+        numResult = 2147483647;
+    }
+    numericData[index - 1] = numResult;
+    index += 1;
+    index3 = 0;
+}
+
+}
 fclose(readFile);
 }
 void minField(char* field, char* fileName){}
 void meanField(char* field, char* fileName){}
-void recordsFieldValue(char* field, char* fileName){}
+void recordsFieldValue(char* fileName, char* value){
+    FILE *readFile;
+    bool charRead = false;
+    bool valueFound = false;
+    char* character = (char*)malloc(sizeof(char*) * 30);
+    readFile = fopen(fileName, "r");
+    char* fullLine = (char*)malloc(sizeof(char*)*50);
+    char* strBuilder = (char*)malloc(sizeof(char*)*25);
+    int strIdx = 0;
+    if(readFile == NULL){
+        printf("Error NULL file read");
+    }
+    else{
+        fscanf(readFile, "%s", character); // actually the full line
+        if(character[0] != '\0'){
+            charRead = true;
+            while(fscanf(readFile, "%c", character) == 1){
+                strcat(fullLine, character);
+                if(*character == value[strIdx]){
+                    strcat(strBuilder,character);
+                    if(strcmp(strBuilder,value)==0){
+                        valueFound = true;
+                    }
+                }
+                if(*character == '\n'){
+                    if(valueFound){
+                        printf("%s",fullLine);
+                        fullLine = "";
+                    }
+                    fullLine = "";
+                    valueFound = false;
+                    strBuilder = "";
+                }
+            }
+        }
+    }
+
+    fclose(readFile);
+    if(charRead){
+        printf("Number of records: %d\n",0);
+    }
+    else{
+        printf("Number of records: %d\n",0);
+    }
+
+}
 
 void printError(){
     printf("invalid command line arguments\n");
