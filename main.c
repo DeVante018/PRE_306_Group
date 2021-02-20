@@ -11,7 +11,7 @@ int commandRHelper(char* fileName);
 void maxField(char*, char*);
 void minField(char*, char*);
 void meanField(char*, char*);
-void recordsFieldValue(char*, char*, char*);
+void recordsFieldValue(char*, char*);
 int checkInputError(int, char*);
 void initOptions(char**);
 
@@ -20,12 +20,6 @@ void printError();
 int main(int argc, char *argv[]){
 
     int arguments = checkInputError(argc, argv[1]);
-
-    if(argc == 1){
-        recordsFieldValue("practice2.csv","Value","61.1");
-        return 0;
-    }
-
     if(arguments == -1){
         printError();
         return 0;
@@ -195,15 +189,8 @@ while(index < 2048 ){
      int addition = storeIndex - 2;
      memset(storeString + addition, 0, replaceBytes);
      memset(cmpString + addition, 0, replaceBytes);
-     for(int i = 0; i < 2048; i++){
-         if(cmpString[i] != storeString[i]){
-            printf("%d", i);
-         }
-     }
-     printf("\n");
-     printf("\n");
+     
      if(strcmp(storeString, cmpString) == 0){
-         printf("hello Kyle");
          break;
      }else{
          relativeIndex = -1;
@@ -231,41 +218,119 @@ while(index < numberOflines){
 }
 }
 printf("%d", relativeIndex);
-printf("%s",lines[1]);
+//printf("%s",lines[1]);
 
+// at this point we have an index of the field that was searched and a 2d array of all the data that was read from the file
 
-index = 0;
+memset(storeString, 'Q', 2048); // initialize all data in storeString to non numeric value
 
+int* numericData = (int*) malloc((numberOflines - 1) * sizeof(int)); // dynamically allocate int array to hold returns of atoi(storestring)
+int relativeIndexIterator = 0;
+int index3 = 0;
+bool checker = false;
+int numResult = 0;
+char* nullptr = NULL;
+if(relativeIndex != -1){
+index = 1; 
+index2 = 0; 
+// loop from second line in file to last line in file 
+while( index < numberOflines){
+    // at each line we go from i to the relative index 
+    for(int i = 0; i <= relativeIndex; i++){
+        // i == relative index then we will start putting characters in store string
+        if(i == relativeIndex){
+            while(lines[index][index2] != ',' && lines[index][index2] != '\n' && index2 != 2048){
+                storeString[index3] = lines[index][index2];
+                index2 += 1; 
+                index3 += 1;
+            }
+        }
+        else{
+            //printf("hello\n");
+            while(lines[index][index2] != ',' && lines[index][index2] != '\n' && index2 != 2048){
+                index2 += 1; 
+            }
+            index2 += 1; 
+        }
+    }
+    // checks if field has numeric data 
+    if(strchr(storeString, '0') != nullptr){
+        printf("in here\n");
+        printf("%s", storeString);
+    }
+
+    if(strchr(storeString, '0') != nullptr || strchr(storeString, '1') != nullptr || strchr(storeString, '2') != nullptr || strchr(storeString, '3') != nullptr || strchr(storeString, '4') != nullptr || strchr(storeString, '5') != nullptr || strchr(storeString, '6') != nullptr || strchr(storeString, '7') != nullptr || strchr(storeString, '8') != nullptr || strchr(storeString, '9') != nullptr){
+        
+        checker = true;
+    }
+
+    if(checker == true ){
+        numResult =  atoi(storeString);
+    }else{
+        //numResult = 2147483647;
+        numResult = 4333;
+    }
+    numericData[index - 1] = numResult;
+    index += 1;
+    index2 = 0;
+    index3 = 0;
+    memset(storeString, 'Q', 2048); 
+}
+printf("\n");
+printf("\n");
+printf("%d", numericData[0]);
+printf("\n");
+printf("%d", numericData[818]);
+}
 fclose(readFile);
 }
 void minField(char* field, char* fileName){}
 void meanField(char* field, char* fileName){}
-
-void recordsFieldValue(char* fileName, char* header, char* value){
-    // How do you F%#*ing reset a string in C! Like d.a though? This is a whole process to do
-    // mf out here be making whole video games and I cant even reset a string...
+void recordsFieldValue(char* fileName, char* value){
     FILE *readFile;
+    bool charRead = false;
+    bool valueFound = false;
+    char* character = (char*)malloc(sizeof(char*) * 30);
     readFile = fopen(fileName, "r");
-    char* str = (char*)malloc(sizeof(char*)*30);
-    char* delim = (char*)malloc(sizeof(char*)*30);
-    char* strBuild;
-    while(fscanf(readFile,"%c",str) == 1){
-        strBuild = (char*)malloc(sizeof(char*)*30);
-        //printf("content: %s\n", str);
-        strcat(strBuild,str);
-        if(strcmp(str,"\n")==0){
-            char* parseString = (char*)malloc(sizeof(char*)*300);
-            strcpy(parseString,strBuild);
-            delim = strtok(parseString,",");
-            while(delim != NULL){
-                printf("word: %s\n",delim);
-                delim = strtok(NULL,",");
-            }
-            parseString[0] = '\0';
-        }
-        free(strBuild);
+    char* fullLine = (char*)malloc(sizeof(char*)*50);
+    char* strBuilder = (char*)malloc(sizeof(char*)*25);
+    int strIdx = 0;
+    if(readFile == NULL){
+        printf("Error NULL file read");
     }
-    printf("Build String: %s",strBuild);
+    else{
+        fscanf(readFile, "%s", character); // actually the full line
+        if(character[0] != '\0'){
+            charRead = true;
+            while(fscanf(readFile, "%c", character) == 1){
+                strcat(fullLine, character);
+                if(*character == value[strIdx]){
+                    strcat(strBuilder,character);
+                    if(strcmp(strBuilder,value)==0){
+                        valueFound = true;
+                    }
+                }
+                if(*character == '\n'){
+                    if(valueFound){
+                        printf("%s",fullLine);
+                        fullLine = "";
+                    }
+                    fullLine = "";
+                    valueFound = false;
+                    strBuilder = "";
+                }
+            }
+        }
+    }
+
+    fclose(readFile);
+    if(charRead){
+        printf("Number of records: %d\n",0);
+    }
+    else{
+        printf("Number of records: %d\n",0);
+    }
+
 }
 
 void printError(){
