@@ -1,12 +1,6 @@
 DATE        UBIT      DURATION    ACTIVITY & TOOL DESCRIPTION
-2021/12/02  devantef  120 minutes Created initial code base and structure
-2021/13/02  devantef  120 minutes Created main function logic to parse command line arguments and added helper functions
-2021/16/02  devantef  60 minutes  finished -f command
-2021/17/02  devantef  120 minutes working on -records field value
-2021/18/02  devantef  200 minutes working on -records field value...again
-
-
-
-
-
-
+2021/12/02  kyleshut  120 minutes group meeting 
+2021/15/02  kyleshut  120 minutes refactored command line logic and functions code
+2021/16/02  kyleshut  300 minutes  made progress on -max 
+2021/18/02  kyleshut  300 minutes made more progress on -max
+2021/19/02  kyleshut  200 minutes group meeting debugging session among the team many bugs were not able to be squashed
