@@ -189,13 +189,7 @@ while(index < 2048 ){
      int addition = storeIndex - 2;
      memset(storeString + addition, 0, replaceBytes);
      memset(cmpString + addition, 0, replaceBytes);
-     for(int i = 0; i < 2048; i++){
-         if(cmpString[i] != storeString[i]){
-            printf("%d", i);
-         }
-     }
-     printf("\n");
-     printf("\n");
+     
      if(strcmp(storeString, cmpString) == 0){
          break;
      }else{
@@ -224,15 +218,18 @@ while(index < numberOflines){
 }
 }
 printf("%d", relativeIndex);
-printf("%s",lines[1]);
+//printf("%s",lines[1]);
+
 // at this point we have an index of the field that was searched and a 2d array of all the data that was read from the file
 
 memset(storeString, 'Q', 2048); // initialize all data in storeString to non numeric value
+
 int* numericData = (int*) malloc((numberOflines - 1) * sizeof(int)); // dynamically allocate int array to hold returns of atoi(storestring)
 int relativeIndexIterator = 0;
 int index3 = 0;
 bool checker = false;
 int numResult = 0;
+char* nullptr = NULL;
 if(relativeIndex != -1){
 index = 1; 
 index2 = 0; 
@@ -249,27 +246,41 @@ while( index < numberOflines){
             }
         }
         else{
-            while(lines[index][index2] != ',' && lines[index][index2] != '\n' && index2 == 2048){
+            //printf("hello\n");
+            while(lines[index][index2] != ',' && lines[index][index2] != '\n' && index2 != 2048){
                 index2 += 1; 
             }
             index2 += 1; 
         }
     }
     // checks if field has numeric data 
-    if(strchr(storeString, '0') != NULL || strchr(storeString, '1') != NULL || strchr(storeString, '2') != NULL || strchr(storeString, '3') != NULL || strchr(storeString, '4') != NULL || strchr(storeString, '5') != NULL || strchr(storeString, '6') != NULL || strchr(storeString, '7') != NULL || strchr(storeString, '8') != NULL || strchr(storeString, '9') != NULL){
+    if(strchr(storeString, '0') != nullptr){
+        printf("in here\n");
+        printf("%s", storeString);
+    }
+
+    if(strchr(storeString, '0') != nullptr || strchr(storeString, '1') != nullptr || strchr(storeString, '2') != nullptr || strchr(storeString, '3') != nullptr || strchr(storeString, '4') != nullptr || strchr(storeString, '5') != nullptr || strchr(storeString, '6') != nullptr || strchr(storeString, '7') != nullptr || strchr(storeString, '8') != nullptr || strchr(storeString, '9') != nullptr){
+        
         checker = true;
     }
 
     if(checker == true ){
         numResult =  atoi(storeString);
     }else{
-        numResult = 2147483647;
+        //numResult = 2147483647;
+        numResult = 4333;
     }
     numericData[index - 1] = numResult;
     index += 1;
+    index2 = 0;
     index3 = 0;
+    memset(storeString, 'Q', 2048); 
 }
-
+printf("\n");
+printf("\n");
+printf("%d", numericData[0]);
+printf("\n");
+printf("%d", numericData[818]);
 }
 fclose(readFile);
 }
