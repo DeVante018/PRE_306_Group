@@ -11,7 +11,7 @@ int commandRHelper(char* fileName);
 void maxField(char*, char*);
 void minField(char*, char*);
 void meanField(char*, char*);
-void recordsFieldValue(char*, char*);
+void recordsFieldValue(char*, char*, char*);
 int checkInputError(int, char*);
 void initOptions(char**);
 
@@ -286,51 +286,31 @@ fclose(readFile);
 }
 void minField(char* field, char* fileName){}
 void meanField(char* field, char* fileName){}
-void recordsFieldValue(char* fileName, char* value){
+void recordsFieldValue(char* fileName, char* header, char* value){
+    // How do you F%#*ing reset a string in C! Like d.a though? This is a whole process to do
+    // mf out here be making whole video games and I cant even reset a string...
     FILE *readFile;
-    bool charRead = false;
-    bool valueFound = false;
-    char* character = (char*)malloc(sizeof(char*) * 30);
     readFile = fopen(fileName, "r");
-    char* fullLine = (char*)malloc(sizeof(char*)*50);
-    char* strBuilder = (char*)malloc(sizeof(char*)*25);
-    int strIdx = 0;
-    if(readFile == NULL){
-        printf("Error NULL file read");
-    }
-    else{
-        fscanf(readFile, "%s", character); // actually the full line
-        if(character[0] != '\0'){
-            charRead = true;
-            while(fscanf(readFile, "%c", character) == 1){
-                strcat(fullLine, character);
-                if(*character == value[strIdx]){
-                    strcat(strBuilder,character);
-                    if(strcmp(strBuilder,value)==0){
-                        valueFound = true;
-                    }
-                }
-                if(*character == '\n'){
-                    if(valueFound){
-                        printf("%s",fullLine);
-                        fullLine = "";
-                    }
-                    fullLine = "";
-                    valueFound = false;
-                    strBuilder = "";
-                }
+    char* str = (char*)malloc(sizeof(char*)*30);
+    char* delim = (char*)malloc(sizeof(char*)*30);
+    char* strBuild;
+    while(fscanf(readFile,"%c",str) == 1){
+        strBuild = (char*)malloc(sizeof(char*)*30);
+        //printf("content: %s\n", str);
+        strcat(strBuild,str);
+        if(strcmp(str,"\n")==0){
+            char* parseString = (char*)malloc(sizeof(char*)*300);
+            strcpy(parseString,strBuild);
+            delim = strtok(parseString,",");
+            while(delim != NULL){
+                printf("word: %s\n",delim);
+                delim = strtok(NULL,",");
             }
+            parseString[0] = '\0';
         }
+        free(strBuild);
     }
-
-    fclose(readFile);
-    if(charRead){
-        printf("Number of records: %d\n",0);
-    }
-    else{
-        printf("Number of records: %d\n",0);
-    }
-
+    printf("Build String: %s",strBuild);
 }
 
 void printError(){
